@@ -1,6 +1,6 @@
 """
     Date created:   01/10/2024
-    Date edited:    01/10/2024
+    Date edited:    01/11/2024
     Sub-module:     cryp_functions.py
     Remarks:        This module is utilized to generate private and public keys for a session.
 """
