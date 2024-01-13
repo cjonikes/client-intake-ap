@@ -9,7 +9,7 @@
 import socket
 import logging
 import threading
-from server.src.utilities import ap_handler
+from server.src.utilities import ap_handler as handler
 
 
 class server:
@@ -30,27 +30,33 @@ class server:
     def set_port(self, port):
         self._instance.server_port = port
 
-    def run_server(self):
-        logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-        logging.debug("Starting server...")
-        print("[INFO]: Starting server...")
-        print(f"[INFO]: Server IP: {self.server_ip}, Server Port: {self.server_port}")
+    def start_server(self):
+        # logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+        # logging.debug("Starting server...")
+        print("[SERVER-INFO]: Starting server...")
+        print(f"[SERVER-INFO]: Server IP: {self.server_ip}, Server Port: {self.server_port}")
 
         main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         main_server.bind((self.server_ip, self.server_port))
         main_server.listen()
 
-        print(f"[INFO]: Server is listening on {self.server_ip}:{self.server_port}")
+        print(f"[SERVER-INFO]: Server is listening on {self.server_ip}:{self.server_port}")
 
         try:
             while True:
-                print("[INFO]: Waiting for client...")
+                # Actively wait for inbound connections
+                print("[SERVER-INFO]: Waiting for client...")
                 conn, addr = main_server.accept()
-                print(f"[INFO]: Client connected from: {addr}, socket: {conn}")
-                t = threading.Thread(target=ap_handler.client_handler, args=(conn, addr))
+                print(f"[SERVER-INFO]: Client connected from: {addr}, socket: {conn}")
+
+                # Create a new instance of client_handler class for each thread
+                client_handler_instance = handler.client_handler(conn, addr)
+
+                # Pass the client_handler instance onto a new thread
+                t = threading.Thread(target=client_handler_instance.handle_connection(), args=(conn, addr))
                 t.start()
 
-                print(len(self.connection_table))
+                print("Number of active threads:", len(self.connection_table) + 1)
                 self.connection_table.append(t)
 
         except KeyboardInterrupt:

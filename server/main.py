@@ -15,4 +15,4 @@ PATCH_VERSION = 0
 if __name__ == '__main__':
     serv = sv.get_server_instance()
     serv.set_port(8000)
-    serv.run_server()
+    serv.start_server()
