@@ -13,7 +13,7 @@ import time
 import client.src.utilities.cryp_functions as encryptor
 import Crypto.PublicKey.RSA as RSA
 
-SERVER_IP = "192.168.56.1"
+SERVER_IP = socket.gethostbyname(socket.gethostname())
 SERVER_PORT = 8000
 
 

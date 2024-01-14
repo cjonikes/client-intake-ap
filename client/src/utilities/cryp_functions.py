@@ -4,12 +4,11 @@
     Sub-module:     cryp_functions.py
     Remarks:        This module is utilized to generate private and public keys for a session.
 """
+import base64
 
 # Imports
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 import json
 
@@ -18,11 +17,7 @@ def generate_key_pair():
     """
         Remarks: This function generates the sessions private and public keys
     """
-    private_key = rsa.generate_private_key(
-        public_exponent=65537,
-        key_size=2048,
-        backend=default_backend()
-    )
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
 
     return private_key, public_key
@@ -64,35 +59,17 @@ def decrypt_msg(to_decrypt, client_private_key):
 
     return deserialized_data
 
-# Unit Testing
+# #Unit Testing
 # if __name__ == '__main__':
-#     to_send = {
-#        'priority-level': 'high',
-#        'table-info': 'client_table',
-#        'Operation': 'CREATE',
-#        'data': {
-#            'first_name': 'Carlos',
-#            'last_name': 'Montilla',
-#            'age': 15,
-#        }
-#     }
 #
+#     data = {'username': 'new_user123'}
 #     pri_key, pub_key = generate_key_pair()
 #
-#     message = encrypt_msg(to_send, pub_key)
+#     message = encrypt_msg(data, pub_key)
 #     encoded_data = base64.b64encode(message)
 #
-# # Server ##########################################################
+# # Server
 #     decoded_data = base64.b64decode(encoded_data)
 #     new_message = decrypt_msg(decoded_data, pri_key)
 #
 #     print("\n", str(new_message))
-#     print(new_message['data']['first_name'])
-#
-# connection_table = {'conn_index': 0,
-#                     'conn_info': {
-#                         'ip': "client-ip",
-#                         'port': "client-port",
-#                         't-reference': "client_thread",
-#                         }
-#                     }
