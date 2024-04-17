@@ -50,10 +50,10 @@ class server:
                 print(f"[SERVER-INFO]: Client connected from: {addr}, socket: {conn}")
 
                 # Create a new instance of client_handler class for each thread
-                client_handler_instance = handler.client_handler(conn, addr)
+                client_handler_instance = handler.connectionRequestHandler(conn, addr)
 
                 # Pass the client_handler instance onto a new thread
-                t = threading.Thread(target=client_handler_instance.handle_connection(), args=(conn, addr))
+                t = threading.Thread(target=client_handler_instance.requestHandler(), args=(conn, addr))
                 t.start()
 
                 print("Number of active threads:", len(self.connection_table) + 1)
