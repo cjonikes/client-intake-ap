@@ -1,6 +1,6 @@
 """
     Date created:   01/10/2024
-    Date edited:    01/14/2024
+    Date edited:    04/19/2024
     Sub-module:     cryp_functions.py
     Remarks:        This module is utilized to generate private and public keys for a session.
 """
@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
-import json
+
 
 
 def generate_key_pair():
@@ -28,12 +28,12 @@ def generate_key_pair():
     return private_key, public_key
 
 
-def encrypt_msg(to_encrypt, server_public_key):
+def encrypt_msg(to_encrypt, client_public_key):
     """
         Remarks:
     """
-    serialized_data = json.dumps(to_encrypt).encode('utf-8')
-    encrypted_data = server_public_key.encrypt(
+    serialized_data = to_encrypt.encode('utf-8')
+    encrypted_data = client_public_key.encrypt(
         serialized_data,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -45,13 +45,13 @@ def encrypt_msg(to_encrypt, server_public_key):
     return encrypted_data  # Encode the encrypted data for transmission (base64)
 
 
-def decrypt_msg(to_decrypt, client_private_key):
+def decrypt_msg(to_decrypt, server_private_key):
     """
         Remarks:
     """
     # Decode the encrypted data in order to decrypt it
 
-    decrypted_data = client_private_key.decrypt(
+    decrypted_data = server_private_key.decrypt(
         to_decrypt,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -60,7 +60,7 @@ def decrypt_msg(to_decrypt, client_private_key):
         )
     )
 
-    deserialized_data = json.loads((decrypted_data.decode('utf-8')))
+    deserialized_data = decrypted_data.decode('utf-8')
 
     return deserialized_data
 

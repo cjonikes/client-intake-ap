@@ -1,10 +1,10 @@
 """
-    Date created:   01/10/2023
-    Date edited:    01/11/2023
+    Date created:   01/10/2024
+    Date edited:    04/19/2024
     Sub-module:     main.py
     Remarks:        Server program entry
 """
-import server.src.server as sv
+import server.src.server as server
 
 # Program version
 
@@ -13,6 +13,6 @@ MINOR_VERSION = 0
 PATCH_VERSION = 0
 
 if __name__ == '__main__':
-    serv = sv.get_server_instance()
+    serv = server.get_server_instance()
     serv.set_port(8000)
     serv.start_server()

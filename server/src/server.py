@@ -1,15 +1,14 @@
 """
     Date created:   01/10/2023
-    Date edited:    01/11/2023
+    Date edited:    04/19/2023
     Sub-module:     main.py
     Remarks:        Server program entry
 """
 # Imports
 
 import socket
-import logging
 import threading
-from server.src.utilities import ap_handler as handler
+import server.src.utilities.ap_handler as handler
 
 
 class server:
@@ -22,7 +21,6 @@ class server:
             cls._instance.connection_index = 0
             cls._instance.server_ip = socket.gethostbyname(socket.gethostname())
             cls._instance.server_port = 00000
-            cls._instance.queue_manager_ref = None
             cls._instance.db_handler_ref = None
 
         return cls._instance
@@ -42,6 +40,8 @@ class server:
 
         print(f"[SERVER-INFO]: Server is listening on {self.server_ip}:{self.server_port}")
 
+        # Connect the server to the database
+        handler.server_logic.connect_to_database()
         try:
             while True:
                 # Actively wait for inbound connections
@@ -50,10 +50,10 @@ class server:
                 print(f"[SERVER-INFO]: Client connected from: {addr}, socket: {conn}")
 
                 # Create a new instance of client_handler class for each thread
-                client_handler_instance = handler.connectionRequestHandler(conn, addr)
+                client_handler_instance = handler.connection_request_handler(conn, addr)
 
                 # Pass the client_handler instance onto a new thread
-                t = threading.Thread(target=client_handler_instance.requestHandler(), args=(conn, addr))
+                t = threading.Thread(target=client_handler_instance.request_handler(), args=(conn, addr))
                 t.start()
 
                 print("Number of active threads:", len(self.connection_table) + 1)

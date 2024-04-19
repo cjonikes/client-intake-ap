@@ -1,6 +1,6 @@
 """
     Date created:   04/17/2024
-    Date edited:    04/17/2024
+    Date edited:    04/19/2024
     Sub-module:
     Remarks:
 """
@@ -23,7 +23,7 @@ def load_config(filename='database.ini', section='postgresql'):
 
     return config
 
-
-if __name__ == '__main__':
-    config = load_config()
-    print(config)
+#
+# if __name__ == '__main__':
+#     config = load_config()
+#     print(config)
