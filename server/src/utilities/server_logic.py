@@ -12,13 +12,23 @@ DATABASE_CONNECTION = None
 
 
 def connect_to_database():
+    """
+        Remarks: This function establishes the connection to the POSTGRESQL database.
+        and stores it on the global variable to be used for different operations.
+    """
     global DATABASE_CONNECTION
     DATABASE_CONNECTION = database.set_connection()
 
 
 def operation_selector(received_json_file):
+    """
+        Remarks: This function takes in the received JSON file from the client
+        to convert it into a dictionary and process the request accordingly.
+        :param received_json_file:
+        :type received_json_file: json
+        :return: json
+    """
     # Convert the received json file from client into a Python dict
-
     json_to_dict = json.loads(received_json_file)
 
     # Retrieve the operation from the newly created dictionary
@@ -46,6 +56,13 @@ def operation_selector(received_json_file):
 
 
 def user_login_function(json_to_dict):
+    """
+        Remarks: Function takes in a dictionary to validate the login credentials with
+        the ones stored in the database and returns a response.
+        :param json_to_dict:
+        :type json_to_dict: dict
+        :returns: response
+    """
     client_username = json_to_dict["data"]["username"]
     client_password = json_to_dict["data"]["passwd"]
 

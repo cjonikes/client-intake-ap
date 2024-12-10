@@ -47,7 +47,12 @@ def encrypt_msg(to_encrypt, client_public_key):
 
 def decrypt_msg(to_decrypt, server_private_key):
     """
-        Remarks:
+        Remarks: This function decrypts a cypher received from a client and decrypts it
+        using the server's private key.
+        :param to_decrypt:
+        :type to_decrypt:
+        :param server_private_key:
+        :type server_private_key:
     """
     # Decode the encrypted data in order to decrypt it
 

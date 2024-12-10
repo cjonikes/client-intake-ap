@@ -1,6 +1,6 @@
 """
     Date created:   01/09/2024
-    Date edited:    04/19/2024
+    Date edited:    07/15/2024
     Sub-module:     core_logic.py
     Remarks:
 """
@@ -9,6 +9,7 @@ import sys
 import json
 import client.main as main
 import client.src.frames.py.ui_logon as login_frame
+import client.src.frames.py.ui_index as main_frame
 import client.src.utilities.access_point as ap
 
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -22,7 +23,7 @@ APP_VERSION = f"{main.MAJOR_VERSION}.{main.MINOR_VERSION}.{main.PATCH_VERSION}"
 
 class ui_logon(QMainWindow, login_frame.Ui_LoginWindow):
     """
-        Remarks: Main window frame declaration and definition.
+        Remarks: Login window frame declaration and definition.
     """
 
     def __init__(self):
@@ -74,6 +75,23 @@ class ui_logon(QMainWindow, login_frame.Ui_LoginWindow):
         self.lePasswd.clear()
 
         print("All containers have been cleared,")
+
+
+class ui_index(QMainWindow, main_frame.Ui_MainWindow):
+    """
+    Remarks: Index Window Frame declaration and definition.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+        # Update as version gets updated.
+        self.setWindowTitle(f"APP_NAME - Ver. {APP_VERSION}")
+        self.lblAppVersion.setText(str(APP_VERSION))
+
+        self.pbMaxAppointments.hide()
+        self.pbMaxManageClients.pressed()
 
 
 def json_message_builder(operation_type, server_operation_type, data, received_json_file=None):
